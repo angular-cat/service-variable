@@ -1,6 +1,11 @@
 <div class="container">
     <pre>{{ cart$ | async | json }}</pre>
-    <button class="btn btn-outline-danger" (click)="clearCart()">
-        <i class="fa-solid fa-eraser"></i> Clear Cart
-    </button>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-outline-danger" (click)="clearCart()">
+            <i class="fa-solid fa-eraser"></i> Clear Cart
+        </button>
+        <button class="btn btn-outline-primary mx-3" routerLink="/check-out">
+            <i class="fa-solid fa-money-check-dollar"></i> CheckOut
+        </button>
+    </div>
 </div>
