@@ -59,12 +59,12 @@ export class CheckOutComponent implements OnInit, OnDestroy {
         return this.orderForm.controls['orderTotalQuantity'];
     }
 
-    setOrderFormValue() {
+    private setOrderFormValue() {
         this.orderedProducts.setValue(this.cartItems);
         this.orderTotalQuantity.setValue(this.quantity);
     }
 
-    getOrderNumber(): void {
+    private getOrderNumber(): void {
         this.ordersSubscription = this.orderService.getOrdersCounter().subscribe(orderCount => {
             if (!orderCount.value) {
                 this.orderService.updateOrdersCounter();
@@ -72,7 +72,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
         })
     }
 
-    sendOrder() {
+    public sendOrder() {
         this.setOrderFormValue();
         this.orderService.addOrder(this.orderNumber, this.orderForm.getRawValue())
             .then(result => {
@@ -81,7 +81,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy() {
+    public ngOnDestroy() {
         this.cartSubscription.unsubscribe();
         this.ordersSubscription.unsubscribe();
     }

@@ -29,12 +29,12 @@ export class ProductCardComponent implements OnInit {
     }
 
     addToCart() {
-        console.log(
-            'Product: ' + this.product.productName + '; ' +
-            'Price: ' + this.product.productPrice + '; ' +
-            'Quantity: ' + this.quantity
-        );
-        this.cartService.createCartItem(this.product, this.quantity);
+        // console.log(
+        //     'Product: ' + this.product.productName + '; ' +
+        //     'Price: ' + this.product.productPrice + '; ' +
+        //     'Quantity: ' + this.quantity
+        // );
+        this.cartService.createCartItem(this.product, this.quantity).then();
         this.quantity = 1;
     }
 }
