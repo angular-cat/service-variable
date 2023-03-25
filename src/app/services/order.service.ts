@@ -1,10 +1,52 @@
 import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from "@angular/fire/compat/database";
+import {Order} from "../models/order";
+import {map, Observable, take} from "rxjs";
+import {OrderCount} from "../models/order-count";
 
 @Injectable({
     providedIn: 'root'
 })
 export class OrderService {
 
-    constructor() {
+    // firebase products collection URL
+    private firebaseURL = 'orders'
+
+    constructor(private firebase: AngularFireDatabase) {
+    }
+
+    //  create one order in to firebase
+    addOrder(orderNumber: number, order: Order) {
+        this.updateOrdersCounter();
+        return this.firebase.list(`${this.firebaseURL}`).push({
+            orderNumber: orderNumber,
+            orderCreated: new Date().getTime(),
+            ...order
+        })
+    }
+
+    // create or update orders counter
+    updateOrdersCounter() {
+        let counter = this.firebase.object(`${this.firebaseURL}/orderCount`);
+        counter.snapshotChanges()
+            .pipe(take(1))
+            .subscribe((item: any) => {
+                let count = ((item.payload.hasChild('value')) ? item.payload.val()['value'] + 1 : 1);
+                counter.update({
+                    value: count,
+                }).then();
+            });
+    }
+
+    //get orders counter value
+    getOrdersCounter(): Observable<OrderCount> {
+        return this.firebase.object<OrderCount>(`${this.firebaseURL}/orderCount`).snapshotChanges()
+            .pipe(map((c: any) => ({key: c.payload.key, ...c.payload.val()})));
+    }
+
+    // read one order
+    getOrder(key: string | null ): Observable<Order> {
+        return this.firebase.object<Order>(`${this.firebaseURL}/${key}`).snapshotChanges()
+            .pipe(map((c: any) => ({key: c.payload.key, ...c.payload.val()})));
     }
 }

@@ -14,7 +14,7 @@ const routes: Routes = [
     {path: 'contact', component: ContactComponent},
     {path: 'cart', component: CartComponent},
     {path: 'check-out', component: CheckOutComponent},
-    {path: 'order', component: OrderComponent}
+    {path: 'order/:key', component: OrderComponent}
 
 ];
 

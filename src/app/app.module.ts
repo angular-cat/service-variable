@@ -18,6 +18,7 @@ import {ContactComponent} from './contact/contact.component';
 import {AboutComponent} from './about/about.component';
 import {OrderComponent} from './order/order.component';
 import { CheckOutComponent } from './check-out/check-out.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { CheckOutComponent } from './check-out/check-out.component';
         BrowserAnimationsModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireDatabaseModule,
-        MaterialModule
+        MaterialModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]

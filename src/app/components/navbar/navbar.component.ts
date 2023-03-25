@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CartService} from "../../services/cart.service";
 import {Subscription} from "rxjs";
-import {Cart} from "../../models/cart";
+import {CartItem} from "../../models/cart-item";
 
 @Component({
     selector: 'app-navbar',
@@ -12,21 +12,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     quantity: number = 0;
 
-    cart$!: Subscription;
+    cartSubscription!: Subscription;
 
     constructor(private cartService: CartService) {
     }
 
     async ngOnInit() {
-        this.cart$ = (await this.cartService.getCart()).subscribe((cart: Cart) => {
-            this.quantity = 0;
-            for (let productKey in cart.items) {
-                this.quantity += cart.items[productKey].quantity;
-            }
+        this.cartSubscription = (await this.cartService.getCartItems()).subscribe((cartItems: CartItem[]) => {
+            this.quantity = this.cartService.getCartItemsQuantity(cartItems);
         });
     }
 
     ngOnDestroy() {
-        this.cart$.unsubscribe();
+        this.cartSubscription.unsubscribe();
     }
 }

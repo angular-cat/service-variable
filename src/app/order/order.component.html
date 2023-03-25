@@ -1,4 +1,14 @@
 <div class="container">
     <h2>Thank you for order!</h2>
-    <h3>Your order number: 1</h3>
+    <p>{{ orderKey }}</p>
+    <pre> {{ order | json }}</pre>
+    <ng-container *ngIf="order">
+        <h3>Your order number is: #{{ order.orderNumber }}</h3>
+    </ng-container>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-outline-primary mx-3"
+                (click)="newOrder()">
+            <i class="fa-solid fa-share-from-square"></i> New Order
+        </button>
+    </div>
 </div>

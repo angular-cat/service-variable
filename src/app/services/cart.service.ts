@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from "@angular/fire/compat/database";
-import {Observable, take} from "rxjs";
+import {map, Observable, take} from "rxjs";
 import {Cart} from "../models/cart";
 import {Product} from "../models/product";
+import {CartItem} from "../models/cart-item";
 
 @Injectable({
     providedIn: 'root'
@@ -38,6 +39,16 @@ export class CartService {
         return this.firebase.object(`${this.firebaseURL}/${cartKey}`).valueChanges() as Observable<Cart>;
     }
 
+    // read items in cart from firebase
+    async getCartItems() {
+        let cartKey = await this.getOrCreateCartKey();
+        return this.firebase.list<CartItem[]>(`${this.firebaseURL}/${cartKey}/items/`)
+            .snapshotChanges().pipe(
+                map(changes =>
+                    changes.map((c: any) => ({key: c.payload.key, ...c.payload.val()})))
+            );
+    }
+
     // get item from cart
     private getItem(cartKey: string, productKey: string) {
         return this.firebase.object(`${this.firebaseURL}/${cartKey}/items/${productKey}`);
@@ -56,6 +67,15 @@ export class CartService {
                     quantity: quantity
                 }).then();
             });
+    }
+
+    // get cart items quantity
+    public getCartItemsQuantity(cartItems: CartItem[]): number {
+        let quantity: number = 0
+        for (let productKey in cartItems) {
+            quantity += cartItems[productKey].quantity;
+        }
+        return quantity
     }
 
     // remove items product from cart

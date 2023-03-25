@@ -1,5 +1,7 @@
 <div class="container">
+    <ng-container *ngIf="cart$">
     <pre>{{ cart$ | async | json }}</pre>
+    </ng-container>
     <div class="d-flex justify-content-end">
         <button class="btn btn-outline-danger" (click)="clearCart()">
             <i class="fa-solid fa-eraser"></i> Clear Cart
