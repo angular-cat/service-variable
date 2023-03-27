@@ -74,7 +74,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
 
     public sendOrder() {
         this.setOrderFormValue();
-        this.orderService.addOrder(this.orderNumber, this.orderForm.getRawValue())
+        this.orderService.addOrder(this.orderForm.getRawValue())
             .then(result => {
                 this.cartService.clearCart().then();
                 this.router.navigate(['/order', result.key]).then()
